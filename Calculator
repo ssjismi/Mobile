@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     EditText e1,e2,e3;
@@ -62,14 +63,18 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 float n1=Float.parseFloat(e1.getText().toString());
                 float n2=Float.parseFloat(e2.getText().toString());
-                float n3=n1/n2;
-                String n4=String.valueOf(n3);
-                e3.setText("Division  "+n4);
+                if(n2==0){
+                    Toast.makeText(MainActivity.this, "Division by zero not possible", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    float n3 = n1 / n2;
+                    String n4 = String.valueOf(n3);
+                    e3.setText("Division  " + n4);
+                }
             }
         });
     }
 }
-
 xml
 
 
