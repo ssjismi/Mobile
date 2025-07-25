@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
                 int n2=Integer.parseInt(e2.getText().toString());
                 int n3=n1+n2;
                 String n4=String.valueOf(n3);
-                e3.setText(n4);
+                e3.setText("Addition  "+n4);
             }
         });
         b2.setOnClickListener(new View.OnClickListener() {
@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
                 int n2=Integer.parseInt(e2.getText().toString());
                 int n3=n1-n2;
                 String n4=String.valueOf(n3);
-                e3.setText(n4);
+                e3.setText("subtraction  "+n4);
             }
         });
         b3.setOnClickListener(new View.OnClickListener() {
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
                 int n2=Integer.parseInt(e2.getText().toString());
                 int n3=n1*n2;
                 String n4=String.valueOf(n3);
-                e3.setText(n4);
+                e3.setText("Multiplication  "+n4);
             }
         });
         b4.setOnClickListener(new View.OnClickListener() {
@@ -64,13 +64,11 @@ public class MainActivity extends AppCompatActivity {
                 float n2=Float.parseFloat(e2.getText().toString());
                 float n3=n1/n2;
                 String n4=String.valueOf(n3);
-                e3.setText(n4);
+                e3.setText("Division  "+n4);
             }
         });
     }
 }
-
-
 
 xml
 
