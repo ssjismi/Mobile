@@ -1,0 +1,259 @@
+MainActivity.java
+
+package com.model.jiscalculator;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.TextView;
+
+public class MainActivity extends AppCompatActivity {
+
+    private TextView display;
+    private  String currentInput="";
+    private  String operator="";
+    private double firstOperand = 0;
+    private double secondOperand = 0;
+    private boolean isOperatorClicked = false;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        display = findViewById(R.id.display);
+        int[] numberButtons = new int[]{
+                R.id.button0, R.id.button1, R.id.button2, R.id.button3,
+                R.id.button4, R.id.button5, R.id.button6, R.id.button7,
+                R.id.button8, R.id.button9
+        };
+        for (int id : numberButtons) {
+            Button button = findViewById(id);
+            button.setOnClickListener(v -> onNumberClick(((Button) v).getText().toString()));
+        }
+        // Operator Buttons
+        findViewById(R.id.buttonplus).setOnClickListener(v -> onOperatorClick("+"));
+        findViewById(R.id.buttonminus).setOnClickListener(v -> onOperatorClick("-"));
+        findViewById(R.id.buttonmul).setOnClickListener(v -> onOperatorClick("*"));
+        findViewById(R.id.buttondivide).setOnClickListener(v -> onOperatorClick("/"));
+
+        // Equals Button
+        findViewById(R.id.buttonequals).setOnClickListener(v -> onEqualsClick());
+
+        // Clear Button
+        findViewById(R.id.buttonC).setOnClickListener(v -> onClearClick());
+    }
+        private void onNumberClick(String number) {
+            if (isOperatorClicked) {
+                currentInput = "";
+                isOperatorClicked = false;
+            }
+            currentInput += number;
+            display.setText(currentInput);
+        }
+
+        private void onOperatorClick(String operator) {
+            if (!currentInput.isEmpty()) {
+                firstOperand = Double.parseDouble(currentInput);
+                this.operator = operator;
+                isOperatorClicked = true;
+            }
+        }
+
+        private void onEqualsClick() {
+            if (!currentInput.isEmpty() && !operator.isEmpty()) {
+                secondOperand = Double.parseDouble(currentInput);
+                double result = 0;
+
+                switch (operator) {
+                    case "+":
+                        result = firstOperand + secondOperand;
+                        break;
+                    case "-":
+                        result = firstOperand - secondOperand;
+                        break;
+                    case "*":
+                        result = firstOperand * secondOperand;
+                        break;
+                    case "/":
+                        if (secondOperand != 0) {
+                            result = firstOperand / secondOperand;
+                        } else {
+                            display.setText("Error");
+                            return;
+                        }
+                        break;
+                }
+
+                display.setText(String.valueOf(result));
+                currentInput = String.valueOf(result);
+                operator = "";
+            }
+        }
+
+        private void onClearClick() {
+            currentInput = "";
+            firstOperand = 0;
+            secondOperand = 0;
+            operator = "";
+            display.setText("0");
+
+    }
+}
+
+
+❤❤❤❤❤❤💕💕💕💕💕💕💕💕💕💕activity_main.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <androidx.gridlayout.widget.GridLayout
+        android:layout_width="387dp"
+        android:layout_height="459dp"
+        app:columnCount="4"
+        app:rowCount="5"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="252dp">
+
+        <Button
+            android:id="@+id/button0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            app:layout_column="0"
+            app:layout_row="0" />
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="101dp"
+            android:layout_height="wrap_content"
+            android:text="1"
+            app:layout_column="1"
+            app:layout_row="0" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="106dp"
+            android:layout_height="wrap_content"
+            android:text="2"
+            app:layout_column="2"
+            app:layout_row="0" />
+
+        <Button
+            android:id="@+id/buttonplus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+"
+            app:layout_column="3"
+            app:layout_row="0" />
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3"
+            app:layout_column="0"
+            app:layout_row="1" />
+
+        <Button
+            android:id="@+id/button6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="6"
+            app:layout_column="0"
+            app:layout_row="2" />
+
+        <Button
+            android:id="@+id/button9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="9"
+            app:layout_column="0"
+            app:layout_row="3" />
+
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="101dp"
+            android:layout_height="wrap_content"
+            android:text="4"
+            app:layout_column="1"
+            app:layout_row="1" />
+
+        <Button
+            android:id="@+id/button7"
+            android:layout_width="99dp"
+            android:layout_height="wrap_content"
+            android:text="7"
+            app:layout_column="1"
+            app:layout_row="2" />
+
+        <Button
+            android:id="@+id/buttonC"
+            android:layout_width="99dp"
+            android:layout_height="wrap_content"
+            android:text="C"
+            app:layout_column="1"
+            app:layout_row="3" />
+
+        <Button
+            android:id="@+id/button5"
+            android:layout_width="101dp"
+            android:layout_height="wrap_content"
+            android:text="5"
+            app:layout_column="2"
+            app:layout_row="1" />
+
+        <Button
+            android:id="@+id/buttonequals"
+            android:layout_width="103dp"
+            android:layout_height="wrap_content"
+            android:text="="
+            app:layout_column="2"
+            app:layout_row="3" />
+
+        <Button
+            android:id="@+id/button8"
+            android:layout_width="103dp"
+            android:layout_height="wrap_content"
+            android:text="8"
+            app:layout_column="2"
+            app:layout_row="2" />
+
+        <Button
+            android:id="@+id/buttonmul"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="*"
+            app:layout_column="3"
+            app:layout_row="1" />
+
+        <Button
+            android:id="@+id/buttonminus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-"
+            app:layout_column="3"
+            app:layout_row="2" />
+
+        <Button
+            android:id="@+id/buttondivide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="/"
+            app:layout_column="3"
+            app:layout_row="3" />
+
+    </androidx.gridlayout.widget.GridLayout>
+
+    <TextView
+        android:id="@+id/display"
+        android:layout_width="387dp"
+        android:layout_height="222dp"
+        android:text="0"
+        tools:layout_editor_absoluteX="12dp"
+        tools:layout_editor_absoluteY="20dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>
