@@ -1,0 +1,72 @@
+package com.example.adapterexceptiondemo;
+
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
+
+public class MainActivity extends AppCompatActivity {
+
+    ListView listView;
+    String[] fruits = {"Apple", "Banana", "Mango", "Orange", "Pineapple", "Grapes"};
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        listView = findViewById(R.id.listView);
+
+        try {
+            // ✅ Using ArrayAdapter to bind data
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                    this,
+                    android.R.layout.simple_list_item_1,
+                    fruits
+            );
+
+            listView.setAdapter(adapter);
+
+            // ✅ Example: Exception handling
+            try {
+                int result = divideNumbers(10, 0); // Will throw ArithmeticException
+                Toast.makeText(this, "Result: " + result, Toast.LENGTH_SHORT).show();
+            } catch (ArithmeticException e) {
+                Toast.makeText(this, "Error: Division by zero!", Toast.LENGTH_LONG).show();
+            }
+
+        } catch (Exception e) {
+            Toast.makeText(this, "Unexpected error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    // Example function to demonstrate exception handling
+    private int divideNumbers(int a, int b) throws ArithmeticException {
+        return a / b;
+    }
+}
+
+❤❤❤❤❤
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fruit List (Adapter Example)"
+        android:textSize="18sp"
+        android:layout_marginBottom="10dp"/>
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
+
