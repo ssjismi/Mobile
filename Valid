@@ -1,0 +1,193 @@
+package com.example.registrationapp;
+
+import androidx.appcompat.app.AppCompatActivity;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+public class RegistrationActivity extends AppCompatActivity {
+
+    EditText etName, etEmail, etPassword;
+    Button btnRegister;
+    SharedPreferences sharedPreferences;
+
+    public static final String PREF_NAME = "MyPref";
+    // Key constants — use these everywhere to avoid typos
+    public static final String KEY_NAME = "KEY_NAME";
+    public static final String KEY_EMAIL = "KEY_EMAIL";
+    public static final String KEY_PASSWORD = "KEY_PASSWORD";
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_registration);
+
+        etName = findViewById(R.id.etName);
+        etEmail = findViewById(R.id.etEmail);
+        etPassword = findViewById(R.id.etPassword);
+        btnRegister = findViewById(R.id.btnRegister);
+
+        sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+
+        btnRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String name = etName.getText().toString().trim();
+                String email = etEmail.getText().toString().trim();
+                String password = etPassword.getText().toString().trim();
+
+                // Basic validation (optional but recommended)
+                if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
+                    Toast.makeText(RegistrationActivity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                // Save data in SharedPreferences
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString(KEY_NAME, name);
+                editor.putString(KEY_EMAIL, email);
+                editor.putString(KEY_PASSWORD, password);
+                editor.apply();
+
+                // Pass data to DisplayActivity via Intent extras (putExtra)
+                Intent intent = new Intent(RegistrationActivity.this, DisplayActivity.class);
+                intent.putExtra(KEY_NAME, name);
+                intent.putExtra(KEY_EMAIL, email);
+                intent.putExtra(KEY_PASSWORD, password);
+                startActivity(intent);
+            }
+        });
+    }
+}
+
+
+2nd javaa
+
+package com.example.registrationapp;
+
+import androidx.appcompat.app.AppCompatActivity;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.widget.TextView;
+
+public class DisplayActivity extends AppCompatActivity {
+
+    TextView tvDetails;
+    SharedPreferences sharedPreferences;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_display);
+
+        tvDetails = findViewById(R.id.tvDetails);
+        sharedPreferences = getSharedPreferences(RegistrationActivity.PREF_NAME, MODE_PRIVATE);
+
+        // First try to get from Intent extras (putExtra)
+        String name = getIntent().getStringExtra(RegistrationActivity.KEY_NAME);
+        String email = getIntent().getStringExtra(RegistrationActivity.KEY_EMAIL);
+        String password = getIntent().getStringExtra(RegistrationActivity.KEY_PASSWORD);
+
+        // If extras are missing for some reason, fall back to SharedPreferences
+        if (name == null) name = sharedPreferences.getString(RegistrationActivity.KEY_NAME, "N/A");
+        if (email == null) email = sharedPreferences.getString(RegistrationActivity.KEY_EMAIL, "N/A");
+        if (password == null) password = sharedPreferences.getString(RegistrationActivity.KEY_PASSWORD, "N/A");
+
+        tvDetails.setText("Name: " + name + "\nEmail: " + email + "\nPassword: " + password);
+    }
+}
+
+
+
+xml11
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:gravity="center_horizontal"
+    android:background="#FAFAFA">
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="User Registration"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="20dp" />
+
+    <EditText
+        android:id="@+id/etName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Name"
+        android:inputType="textPersonName"
+        android:layout_marginBottom="12dp" />
+
+    <EditText
+        android:id="@+id/etEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Email"
+        android:inputType="textEmailAddress"
+        android:layout_marginBottom="12dp" />
+
+    <EditText
+        android:id="@+id/etPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Password"
+        android:inputType="textPassword"
+        android:layout_marginBottom="20dp" />
+
+    <Button
+        android:id="@+id/btnRegister"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Register"
+        android:backgroundTint="#4CAF50"
+        android:textColor="#FFFFFF"
+        android:padding="10dp" />
+</LinearLayout>
+
+
+
+2nd.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="20dp"
+    android:background="#FFFFFF">
+
+    <TextView
+        android:id="@+id/tvHeading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Registered Details"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="20dp" />
+
+    <TextView
+        android:id="@+id/tvDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Details will appear here"
+        android:textSize="18sp"
+        android:textColor="#000000" />
+</LinearLayout>
+
+
+
