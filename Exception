@@ -1,0 +1,111 @@
+MainActivity.java
+
+package com.example.exception;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
+import java.util.ArrayList;
+
+public class MainActivity extends AppCompatActivity {
+    EditText e1;
+    Button b1;
+    ListView l1;
+    ArrayList<String> validNumbers;
+    ArrayAdapter<String> adapter;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_main);
+        e1=findViewById(R.id.editTextText);
+        b1=findViewById(R.id.button);
+        l1=findViewById(R.id.listview);
+        validNumbers=new ArrayList<>();
+        adapter=new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,validNumbers);
+        l1.setAdapter(adapter);
+        b1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                validNumbers.clear();
+                String input=e1.getText().toString().trim();
+                String[] parts=input.split(",");
+                for(String part: parts){
+                    try{
+                        int number= Integer.parseInt(part.trim());
+                        validNumbers.add(String.valueOf(number));
+                    }
+                    catch(NumberFormatException e){
+                        Toast.makeText(MainActivity.this, "invalid input skipped:" +part.trim(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+                adapter.notifyDataSetChanged();
+            }
+        });
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+    }
+}
+
+
+
+MainActivity.xml
+
+
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_centerVertical="true"
+    tools:context=".MainActivity">
+
+    <EditText
+        android:id="@+id/editTextText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="100dp"
+        android:ems="10"
+        android:inputType="text"
+        android:hint="Enter numbers comma"
+        tools:layout_editor_absoluteX="104dp"
+        tools:layout_editor_absoluteY="75dp" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="-150dp"
+        android:layout_marginTop="180dp"
+        android:text="Button"
+        tools:layout_editor_absoluteX="155dp"
+        tools:layout_editor_absoluteY="132dp" />
+
+    <ListView
+        android:id="@+id/listview"
+        android:layout_width="409dp"
+        android:layout_height="549dp"
+        android:layout_marginLeft="-200dp"
+        android:layout_marginTop="250dp"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="219dp" />
+</androidx.appcompat.widget.LinearLayoutCompat>
